@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encrypt and Decrypt with CryptoJS</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            <h3>Simple AES Encrypt and Decrypt Using CryptoJS</h3>
+            <p><small>Free for use :)</small></p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12"><h4>Encrypt</h4></div>
+            <div class="col-md-9">
+                <label for="plaintext">Plaintext</label>
+                <div class="form-group mb-3">
+                    <textarea class="form-control" placeholder="Input Value" id="plaintext"></textarea>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="passphrase">Passphrase</label>
+                <div class="form-group mb-3">
+                    <input type="text" class="form-control" placeholder="Input Value" id="passphrase">
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <button class="btn btn-success" type="button" onclick="encrypt()">Encrypt</button>
+                <br><br>
+                <div>
+                    <label for="ciphertext">Ciphertext</label>
+                    <input type="text" class="form-control" placeholder="Output Value" id="ciphertext" readonly>
+                </div>
+            </div>
+
+            <div class="col-md-12"><br><br><hr></div>
+
+            <div class="col-md-12"><h4>Decrypt</h4></div>
+            <div class="col-md-9">
+                <label for="encryptedtext">Ciphertext</label>
+                <div class="form-group mb-3">
+                    <input type="text" class="form-control" placeholder="Input Value" id="encryptedtext">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label for="passphrase2">Passphrase</label>
+                <div class="form-group mb-3">
+                    <input type="text" class="form-control" placeholder="Input Value" id="passphrase2">
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <button class="btn btn-success" type="button" onclick="decrypt()">Decrypt</button>
+                <br><br>
+                <div>
+                    <label for="plaintext2">Plaintext</label>
+                    <textarea class="form-control" placeholder="Output Value" id="plaintext2" readonly></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function encrypt() {
+            const plaintext = document.getElementById('plaintext').value;
+            const passphrase = document.getElementById('passphrase').value;
+            const ciphertext = CryptoJS.AES.encrypt(plaintext, passphrase).toString();
+            document.getElementById('ciphertext').value = ciphertext;
+        }
+
+        function decrypt() {
+            const ciphertext = document.getElementById('encryptedtext').value;
+            const passphrase = document.getElementById('passphrase2').value;
+            const bytes = CryptoJS.AES.decrypt(ciphertext, passphrase);
+            const plaintext = bytes.toString(CryptoJS.enc.Utf8);
+            document.getElementById('plaintext2').value = plaintext;
+        }
+    </script>
+</body>
+
+</html>

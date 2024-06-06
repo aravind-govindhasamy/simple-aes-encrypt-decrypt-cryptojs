@@ -9,17 +9,200 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            overflow: hidden;
+            pointer-events: none;
+            background: #4e54c8;
+            background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
+            color: white;
+        }
+
+        .container {
+            pointer-events: auto;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+
+        h3,
+        h4 {
+            color: white;
+        }
+
+        label {
+            color: white;
+        }
+
+        textarea,
+        input[type="text"] {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid white;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        button:active {
+            background-color: #1e7e34;
+        }
+
+        hr {
+            border-top: 1px solid white;
+        }
+
+        .context {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 16px;
+        }
+
+        .circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .circles li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
+        }
+
+        .circles li:nth-child(1) {
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+
+        .circles li:nth-child(2) {
+            left: 10%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 2s;
+            animation-duration: 12s;
+        }
+
+        .circles li:nth-child(3) {
+            left: 70%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 4s;
+        }
+
+        .circles li:nth-child(4) {
+            left: 40%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 0s;
+            animation-duration: 18s;
+        }
+
+        .circles li:nth-child(5) {
+            left: 65%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 0s;
+        }
+
+        .circles li:nth-child(6) {
+            left: 75%;
+            width: 110px;
+            height: 110px;
+            animation-delay: 3s;
+        }
+
+        .circles li:nth-child(7) {
+            left: 35%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 7s;
+        }
+
+        .circles li:nth-child(8) {
+            left: 50%;
+            width: 25px;
+            height: 25px;
+            animation-delay: 15s;
+            animation-duration: 45s;
+        }
+
+        .circles li:nth-child(9) {
+            left: 20%;
+            width: 15px;
+            height: 15px;
+            animation-delay: 2s;
+            animation-duration: 35s;
+        }
+
+        .circles li:nth-child(10) {
+            left: 85%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 0s;
+            animation-duration: 11s;
+        }
+
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 0;
+            }
+
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
+        <div class="context">
+            <span id="currentDateTime"></span>
+            <br />
+            <span id="currentDay"></span>
+            <br />
+            Creator:
+            <a href="https://github.com/aravind-govindhasamy" style="color: white"
+              >Aravind Govindhasamy</a
+            >
+            <br />
+            
+          </div>
         <div>
             <h3>Simple AES Encrypt and Decrypt Using CryptoJS</h3>
             <p><small>Free for use :)</small></p>
         </div>
 
         <div class="row">
-            <div class="col-md-12"><h4>Encrypt</h4></div>
+            <div class="col-md-12">
+                <h4>Encrypt</h4>
+            </div>
             <div class="col-md-9">
                 <label for="plaintext">Plaintext</label>
                 <div class="form-group mb-3">
@@ -44,7 +227,9 @@
 
             <div class="col-md-12"><br><br><hr></div>
 
-            <div class="col-md-12"><h4>Decrypt</h4></div>
+            <div class="col-md-12">
+                <h4>Decrypt</h4>
+            </div>
             <div class="col-md-9">
                 <label for="encryptedtext">Ciphertext</label>
                 <div class="form-group mb-3">
@@ -57,7 +242,7 @@
                     <input type="text" class="form-control" placeholder="Input Value" id="passphrase2">
                 </div>
             </div>
-
+            
             <div class="col-md-12">
                 <button class="btn btn-success" type="button" onclick="decrypt()">Decrypt</button>
                 <br><br>
@@ -66,25 +251,61 @@
                     <textarea class="form-control" placeholder="Output Value" id="plaintext2" readonly></textarea>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <script>
-        function encrypt() {
-            const plaintext = document.getElementById('plaintext').value;
-            const passphrase = document.getElementById('passphrase').value;
-            const ciphertext = CryptoJS.AES.encrypt(plaintext, passphrase).toString();
-            document.getElementById('ciphertext').value = ciphertext;
-        }
-
-        function decrypt() {
-            const ciphertext = document.getElementById('encryptedtext').value;
-            const passphrase = document.getElementById('passphrase2').value;
-            const bytes = CryptoJS.AES.decrypt(ciphertext, passphrase);
-            const plaintext = bytes.toString(CryptoJS.enc.Utf8);
-            document.getElementById('plaintext2').value = plaintext;
-        }
-    </script>
-</body>
-
-</html>
+            </div>
+            </div>
+            
+            <ul class="circles">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            
+            <script>
+                function encrypt() {
+                    const plaintext = document.getElementById('plaintext').value;
+                    const passphrase = document.getElementById('passphrase').value;
+                    const ciphertext = CryptoJS.AES.encrypt(plaintext, passphrase).toString();
+                    document.getElementById('ciphertext').value = ciphertext;
+                }
+            
+                function decrypt() {
+                    const ciphertext = document.getElementById('encryptedtext').value;
+                    const passphrase = document.getElementById('passphrase2').value;
+                    const bytes = CryptoJS.AES.decrypt(ciphertext, passphrase);
+                    const plaintext = bytes.toString(CryptoJS.enc.Utf8);
+                    document.getElementById('plaintext2').value = plaintext;
+                }
+                function getCurrentDateTime() {
+                    const currentDate = new Date();
+                    const options = {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      second: "2-digit",
+                      hour12: true,
+                    };
+                    const formattedDate = currentDate.toLocaleDateString("en-US", options);
+                    document.getElementById("currentDateTime").textContent = formattedDate;
+                    document.getElementById("currentDay").textContent =
+                      currentDate.toLocaleDateString("en-US", {
+                        weekday: "long",
+                      });
+                  }
+            
+                  getCurrentDateTime();
+                  setInterval(getCurrentDateTime, 1000);
+            </script>
+            </body>
+            
+            </html>
+            

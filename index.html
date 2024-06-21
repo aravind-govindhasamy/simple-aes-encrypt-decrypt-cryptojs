@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,27 +8,23 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            overflow: hidden;
-            pointer-events: none;
+            
             background: #4e54c8;
             background: -webkit-linear-gradient(to left, #8f94fb, #4e54c8);
             color: white;
         }
 
         .container {
-            pointer-events: auto;
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background: transparent;
+            position: relative;
+            padding: 20px;
         }
 
-        h3,
-        h4 {
+        h3, h4 {
             color: white;
         }
 
@@ -37,8 +32,7 @@
             color: white;
         }
 
-        textarea,
-        input[type="text"] {
+        textarea, input[type="text"] {
             color: white;
             background-color: rgba(255, 255, 255, 0.1);
             border: 1px solid white;
@@ -62,20 +56,13 @@
             border-top: 1px solid white;
         }
 
-        .context {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: white;
-            font-size: 16px;
-        }
-
         .circles {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            z-index: -1;
         }
 
         .circles li {
@@ -192,174 +179,129 @@
         }
     </style>
 </head>
-
 <body>
-    <div class="container">
-        <div class="context">
-            <span id="currentDateTime"></span>
-            <br />
-            <span id="currentDay"></span>
-            <br />
-            Creator:
-            <a href="https://github.com/aravind-govindhasamy" style="color: white">Aravind Govindhasamy</a>
-            <br />
-
-        </div>
-        <div>
-            <h3>Simple AES Encrypt and Decrypt Using CryptoJS</h3>
-            <p><small>Free for use :)</small></p>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <h4>Encrypt</h4>
-            </div>
-            <div class="col-md-9">
-                <label for="plaintext">Plaintext</label>
-                <div class="form-group mb-3">
-                    <textarea class="form-control" placeholder="Input Value" id="plaintext"></textarea>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <label for="passphrase">Passphrase</label>
-                <div class="form-group mb-3">
-                    <input type="text" class="form-control" placeholder="Input Value" id="passphrase">
-                </div>
-            </div>
-
-            <div class="col-md-12">
-                <button class="btn btn-success" type="button" onclick="encrypt()">Encrypt</button>
-                <br><br>
-                <div>
-                    <label for="ciphertext">Ciphertext</label>
-                    <input type="text" class="form-control" placeholder="Output Value" id="ciphertext" readonly>
-                </div>
-            </div>
-
-            <div class="col-md-12"><br><br><hr></div>
-
-            <div class="col-md-12">
-                <h4>Decrypt</h4>
-            </div>
-            <div class="col-md-9">
-                <label for="encryptedtext">Ciphertext</label>
-                <div class="form-group mb-3">
-                    <input type="text" class="form-control" placeholder="Input Value" id="encryptedtext">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <label for="passphrase2">Passphrase</label>
-                <div class="form-group mb-3">
-                    <input type="text" class="form-control" placeholder="Input Value" id="passphrase2">
-                </div>
-            </div>
-
-            <div class="col-md-12">
-                <button class="btn btn-success" type="button" onclick="decrypt()">Decrypt</button>
-                <br><br>
-                <div>
-                    <label for="plaintext2">Plaintext</label>
-                    <textarea class="form-control" placeholder="Output Value" id="plaintext2" readonly></textarea>
-                </div>
-            </div>
-
-            <div class="col-md-12"><br><br><hr></div>
-
-            <div class="col-md-12">
-                <button class="btn btn-danger" type="button" onclick="clearAll()">Clear All</button>
-            </div>
-        </div>
+<div class="container">
+    <div>
+        <h3>Simple AES Encrypt and Decrypt Using CryptoJS</h3>
+        <p><small>Free for use :)</small></p>
+    </div>
+    <div class="context">
+        <span id="currentDateTime"></span><br>
+        Creator: <a href="https://github.com/aravind-govindhasamy" style="color: white">Aravind Govindhasamy</a><br>
     </div>
 
-    <div class="toast" id="toast"></div>
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Encrypt</h4>
+            <div class="form-group mb-3">
+                <label for="plaintext">Plaintext</label>
+                <textarea class="form-control" placeholder="Input Value" id="plaintext"></textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label for="passphrase">Passphrase</label>
+                <input type="text" class="form-control" placeholder="Input Value" id="passphrase">
+            </div>
+            <button class="btn btn-success" type="button" onclick="encrypt()">Encrypt</button>
+            <br><br>
+            <div class="form-group mb-3">
+                <label for="ciphertext">Ciphertext</label>
+                <input type="text" class="form-control" placeholder="Output Value" id="ciphertext" readonly>
+            </div>
+        </div>
 
-    <ul class="circles">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-    </ul>
+        <div class="col-md-6">
+            <h4>Decrypt</h4>
+            <div class="form-group mb-3">
+                <label for="encryptedtext">Ciphertext</label>
+                <input type="text" class="form-control" placeholder="Input Value" id="encryptedtext">
+            </div>
+            <div class="form-group mb-3">
+                <label for="passphrase2">Passphrase</label>
+                <input type="text" class="form-control" placeholder="Input Value" id="passphrase2">
+            </div>
+            <button class="btn btn-success" type="button" onclick="decrypt()">Decrypt</button>
+            <br><br>
+            <div class="form-group mb-3">
+                <label for="plaintext2">Plaintext</label>
+                <textarea class="form-control" placeholder="Output Value" id="plaintext2" readonly></textarea>
+            </div>
+        </div>
 
-    <script>
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.style.display = 'block';
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, 3000);
+        <div class="col-md-12">
+            <button class="btn btn-danger" type="button" onclick="clearAll()">Clear All</button>
+        </div>
+    </div>
+</div>
+
+<ul class="circles">
+    <li></li><li></li><li></li><li></li><li></li>
+    <li></li><li></li><li></li><li></li><li></li>
+</ul>
+
+<div class="toast" id="toast"></div>
+
+<script>
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.style.display = 'block';
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 3000);
+    }
+
+    function encrypt() {
+        try {
+            const plaintext = document.getElementById('plaintext').value;
+            const passphrase = document.getElementById('passphrase').value;
+            const ciphertext = CryptoJS.AES.encrypt(plaintext, passphrase).toString();
+            document.getElementById('ciphertext').value = ciphertext;
+        } catch (error) {
+            showToast('Encryption failed. Check console for details.');
+            console.error('Encryption failed:', error);
         }
+    }
 
-        function encrypt() {
-            try {
-                const plaintext = document.getElementById('plaintext').value;
-                const passphrase = document.getElementById('passphrase').value;
-                if (!plaintext || !passphrase) {
-                    throw new Error('Plaintext and passphrase are required for encryption.');
-                }
-                const ciphertext = CryptoJS.AES.encrypt(plaintext, passphrase).toString();
-                document.getElementById('ciphertext').value = ciphertext;
-            } catch (error) {
-                showToast(error.message);
-            }
+    function decrypt() {
+        try {
+            const ciphertext = document.getElementById('encryptedtext').value;
+            const passphrase = document.getElementById('passphrase2').value;
+            const bytes = CryptoJS.AES.decrypt(ciphertext, passphrase);
+            const plaintext = bytes.toString(CryptoJS.enc.Utf8);
+            document.getElementById('plaintext2').value = plaintext;
+        } catch (error) {
+            showToast('Decryption failed. Check console for details.');
+            console.error('Decryption failed:', error);
         }
+    }
 
-        function decrypt() {
-            try {
-                const ciphertext = document.getElementById('encryptedtext').value;
-                const passphrase = document.getElementById('passphrase2').value;
-                if (!ciphertext || !passphrase) {
-                    throw new Error('Ciphertext and passphrase are required for decryption.');
-                }
-                const bytes = CryptoJS.AES.decrypt(ciphertext, passphrase);
-                const plaintext = bytes.toString(CryptoJS.enc.Utf8);
-                if (!plaintext) {
-                    throw new Error('Decryption failed. Please check your passphrase and ciphertext.');
-                }
-                document.getElementById('plaintext2').value = plaintext;
-            } catch (error) {
-                showToast(error.message);
-            }
-        }
+    function clearAll() {
+        document.getElementById('plaintext').value = '';
+        document.getElementById('passphrase').value = '';
+        document.getElementById('ciphertext').value = '';
+        document.getElementById('encryptedtext').value = '';
+        document.getElementById('passphrase2').value = '';
+        document.getElementById('plaintext2').value = '';
+    }
 
-        function clearAll() {
-            document.getElementById('plaintext').value = '';
-            document.getElementById('passphrase').value = '';
-            document.getElementById('ciphertext').value = '';
-            document.getElementById('encryptedtext').value = '';
-            document.getElementById('passphrase2').value = '';
-            document.getElementById('plaintext2').value = '';
-        }
+    function getCurrentDateTime() {
+        const currentDate = new Date();
+        const options = {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: true,
+        };
+        document.getElementById("currentDateTime").textContent = currentDate.toLocaleDateString(undefined, options);
+        document.getElementById("currentDay").textContent = currentDate.toDateString();
+    }
 
-        function getCurrentDateTime() {
-            const currentDate = new Date();
-            const options = {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-                hour12: true,
-            };
-            const formattedDate = currentDate.toLocaleDateString("en-US", options);
-            document.getElementById("currentDateTime").textContent = formattedDate;
-            document.getElementById("currentDay").textContent =
-                currentDate.toLocaleDateString("en-US", {
-                    weekday: "long",
-                });
-        }
-
-        getCurrentDateTime();
-        setInterval(getCurrentDateTime, 1000);
-    </script>
+    getCurrentDateTime();
+    setInterval(getCurrentDateTime, 1000);
+</script>
 </body>
-
 </html>

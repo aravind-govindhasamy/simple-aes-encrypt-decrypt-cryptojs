@@ -177,6 +177,19 @@
                 border-radius: 50%;
             }
         }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            min-width: 200px;
+            padding: 10px;
+            background-color: #dc3545;
+            color: white;
+            border-radius: 5px;
+            display: none;
+            z-index: 9999;
+        }
     </style>
 </head>
 
@@ -188,12 +201,10 @@
             <span id="currentDay"></span>
             <br />
             Creator:
-            <a href="https://github.com/aravind-govindhasamy" style="color: white"
-              >Aravind Govindhasamy</a
-            >
+            <a href="https://github.com/aravind-govindhasamy" style="color: white">Aravind Govindhasamy</a>
             <br />
-            
-          </div>
+
+        </div>
         <div>
             <h3>Simple AES Encrypt and Decrypt Using CryptoJS</h3>
             <p><small>Free for use :)</small></p>
@@ -242,7 +253,7 @@
                     <input type="text" class="form-control" placeholder="Input Value" id="passphrase2">
                 </div>
             </div>
-            
+
             <div class="col-md-12">
                 <button class="btn btn-success" type="button" onclick="decrypt()">Decrypt</button>
                 <br><br>
@@ -251,61 +262,104 @@
                     <textarea class="form-control" placeholder="Output Value" id="plaintext2" readonly></textarea>
                 </div>
             </div>
+
+            <div class="col-md-12"><br><br><hr></div>
+
+            <div class="col-md-12">
+                <button class="btn btn-danger" type="button" onclick="clearAll()">Clear All</button>
             </div>
-            </div>
-            
-            <ul class="circles">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-            
-            <script>
-                function encrypt() {
-                    const plaintext = document.getElementById('plaintext').value;
-                    const passphrase = document.getElementById('passphrase').value;
-                    const ciphertext = CryptoJS.AES.encrypt(plaintext, passphrase).toString();
-                    document.getElementById('ciphertext').value = ciphertext;
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+
+    <script>
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        function encrypt() {
+            try {
+                const plaintext = document.getElementById('plaintext').value;
+                const passphrase = document.getElementById('passphrase').value;
+                if (!plaintext || !passphrase) {
+                    throw new Error('Plaintext and passphrase are required for encryption.');
                 }
-            
-                function decrypt() {
-                    const ciphertext = document.getElementById('encryptedtext').value;
-                    const passphrase = document.getElementById('passphrase2').value;
-                    const bytes = CryptoJS.AES.decrypt(ciphertext, passphrase);
-                    const plaintext = bytes.toString(CryptoJS.enc.Utf8);
-                    document.getElementById('plaintext2').value = plaintext;
+                const ciphertext = CryptoJS.AES.encrypt(plaintext, passphrase).toString();
+                document.getElementById('ciphertext').value = ciphertext;
+            } catch (error) {
+                showToast(error.message);
+            }
+        }
+
+        function decrypt() {
+            try {
+                const ciphertext = document.getElementById('encryptedtext').value;
+                const passphrase = document.getElementById('passphrase2').value;
+                if (!ciphertext || !passphrase) {
+                    throw new Error('Ciphertext and passphrase are required for decryption.');
                 }
-                function getCurrentDateTime() {
-                    const currentDate = new Date();
-                    const options = {
-                      weekday: "long",
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      second: "2-digit",
-                      hour12: true,
-                    };
-                    const formattedDate = currentDate.toLocaleDateString("en-US", options);
-                    document.getElementById("currentDateTime").textContent = formattedDate;
-                    document.getElementById("currentDay").textContent =
-                      currentDate.toLocaleDateString("en-US", {
-                        weekday: "long",
-                      });
-                  }
-            
-                  getCurrentDateTime();
-                  setInterval(getCurrentDateTime, 1000);
-            </script>
-            </body>
-            
-            </html>
-            
+                const bytes = CryptoJS.AES.decrypt(ciphertext, passphrase);
+                const plaintext = bytes.toString(CryptoJS.enc.Utf8);
+                if (!plaintext) {
+                    throw new Error('Decryption failed. Please check your passphrase and ciphertext.');
+                }
+                document.getElementById('plaintext2').value = plaintext;
+            } catch (error) {
+                showToast(error.message);
+            }
+        }
+
+        function clearAll() {
+            document.getElementById('plaintext').value = '';
+            document.getElementById('passphrase').value = '';
+            document.getElementById('ciphertext').value = '';
+            document.getElementById('encryptedtext').value = '';
+            document.getElementById('passphrase2').value = '';
+            document.getElementById('plaintext2').value = '';
+        }
+
+        function getCurrentDateTime() {
+            const currentDate = new Date();
+            const options = {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true,
+            };
+            const formattedDate = currentDate.toLocaleDateString("en-US", options);
+            document.getElementById("currentDateTime").textContent = formattedDate;
+            document.getElementById("currentDay").textContent =
+                currentDate.toLocaleDateString("en-US", {
+                    weekday: "long",
+                });
+        }
+
+        getCurrentDateTime();
+        setInterval(getCurrentDateTime, 1000);
+    </script>
+</body>
+
+</html>
